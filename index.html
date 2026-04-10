@@ -1,0 +1,71 @@
+<DOCOTYPE html>
+    <html>
+        <head>
+            <style>
+                body{
+                    background-image: url(Fondo.jpeg);
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    opacity: 0.6         
+                
+                }
+            </style>
+        </head>
+        <body>
+            <form id="Formulario">
+                <input type="text" id="Nombre" placeholder="Nombre" required>
+                <input type="email" id="Correo" placeholder="Correo" required>
+                <input type="number" id="Telefono" placeholder="Telefono" required minlength="10" >
+                <input type="date" id="Fechan" name="FechaN" max="2008-01-01" required >
+                <input type="text" id="GeneroM" placeholder="Genero Musical" required>
+                <button type="submit">Enviar</button>
+            </form>
+           <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+// Tu configuración
+const firebaseConfig = {
+  apiKey: "AIzaSyDS2P4xx3-D0cAnHVjd3eghBobdqCjNNzw",
+  authDomain: "new-word-music.firebaseapp.com",
+  projectId: "new-word-music",
+  storageBucket: "new-word-music.firebasestorage.app",
+  messagingSenderId: "769648154705",
+  appId: "1:769648154705:web:d33608197a27f2fcb10070"
+};
+
+// 1. Inicializar Firebase y la DB (usamos 'db' para evitar confusión)
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 2. Selección del formulario con comillas correctas
+const form = document.getElementById('Formulario');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // 3. Captura de datos con validación .value y comas correctas
+  const DatosArtista = {
+    Nombre: document.getElementById('Nombre').value,
+    Correo: document.getElementById('Correo').value,
+    Telefono: document.getElementById('Telefono').value,
+    Nacimiento: document.getElementById('Fechan').value,
+    GeneroMusical: document.getElementById('GeneroM').value,
+    fecha: new Date()
+  };
+
+  try {
+    // 4. Referencia correcta a la base de datos 'db'
+    const docRef = await addDoc(collection(db, "Artista"), DatosArtista);
+    alert("Gracias por tu Interés.");
+    form.reset();
+  } catch (error) {
+    console.error("Error al guardar:", error);
+    alert("Error al capturar tus datos: " + error.message);
+  }
+});
+</script>
+        </body>
+    </html>
